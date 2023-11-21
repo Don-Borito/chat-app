@@ -1,91 +1,128 @@
-import React, { useState } from 'react';
-import { View, TextInput, Button, ScrollView, Text, StyleSheet, KeyboardAvoidingView, Image} from 'react-native';
+import React, { useState } from "react";
+import { View, StyleSheet, Modal, Pressable, Text } from "react-native";
+import Header from "./components/Header";
+import InputContainer from "./components/InputContainer";
+import MessageContainer from "./components/MessageContainer";
+import UploadModal from "./components/UploadModal";
+import RegisterModal from "./components/RegisterModal";
+import LoginModal from "./components/LoginModal";
 
 export default function App() {
-  const [text, setText] = useState('');
+  const [userText, setUserText] = useState("");
   const [messages, setMessages] = useState([]);
+  const [uploadModalVisible, setUploadModalVisible] = useState(false);
+  const [registerModalVisible, setRegisterModalVisible] = useState(false);
+  const [loginModalVisible, setLoginModalVisible] = useState(false);
+  const [isAnyModalActive, setIsAnyModalActive] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const sendText = () => {
-    if (text) {
-      const aiResponse = `AI Antwort auf: ${text}`;
+    if (userText) {
+      const aiResponse = `AI Antwort auf: ${userText}`;
 
-      setMessages([...messages, { sender: 'user', text }, { sender: 'ai', text: aiResponse }]);
-      setText('');
+      setMessages([
+        ...messages,
+        { sender: "user", text: userText },
+        { sender: "ai", text: aiResponse },
+      ]);
+      setUserText("");
     }
   };
+  function ToggleModal() {
+    setUploadModalVisible(!uploadModalVisible);
+    setIsAnyModalActive(!isAnyModalActive);
+  }
+  function ToggleModalRegister() {
+    setRegisterModalVisible(!registerModalVisible);
+    setIsAnyModalActive(!isAnyModalActive);
+  }
+  function ToggleModalLogin() {
+    setLoginModalVisible(!loginModalVisible);
+    setIsAnyModalActive(!isAnyModalActive);
+  }
+  function setLogin() {
+    setLoggedIn(true);
+  }
   return (
-    <View style={{ flex: 1, padding: 10, paddingTop: 50 , paddingBottom: 50}}>
-      <View style={styles.header}>
-      <Image style={styles.logoImg} source={require("./assets/chatcharmlogo.png")}></Image>
-        <Text style={styles.logoText}>ChatCharm</Text>
-        <Image style={styles.settings} source={require("./assets/settings.png")}></Image>
-      </View>
-      <ScrollView style={{ flex: 1 }}>
-        {messages.map((message, index) => (
-          <View key={index} style={message.sender === 'user' ? styles.userMessage : styles.aiMessage}>
-            <Text>{message.text}</Text>
-          </View>
-        ))}
-      </ScrollView>
-      <KeyboardAvoidingView style={styles.inputContainer} behavior="padding" enabled>
-        <TextInput 
-          style={styles.textInput} 
-          value={text} 
-          onChangeText={setText} 
-          placeholder="Enter message"
-        />
-        <Button title="Send" onPress={sendText} />
-      </KeyboardAvoidingView>
+    <View style={styles.container}>
+      <LoginModal
+        toggleModalLogin={ToggleModalLogin}
+        loginModalVisible={loginModalVisible}
+        login={setLogin}
+      ></LoginModal>
+      <RegisterModal
+        toggleModal={ToggleModalRegister}
+        modalVisible={registerModalVisible}
+        toggleModalLogin={ToggleModalLogin}
+      ></RegisterModal>
+      <UploadModal
+        toggleModal={ToggleModal}
+        modalVisible={uploadModalVisible}
+      ></UploadModal>
+      <Header
+        setModalVisible={ToggleModal}
+        loggedIn={loggedIn}
+        setRegisterModalVisible={ToggleModalRegister}
+      ></Header>
+      <MessageContainer messages={messages}></MessageContainer>
+      <InputContainer
+        sendText={sendText}
+        setUserText={setUserText}
+        userText={userText}
+        isAnyModalActive={isAnyModalActive}
+      ></InputContainer>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  inputContainer: {
-    flexDirection: 'row',
-    padding: 5,
-  },
-  textInput: {
+  container: {
     flex: 1,
-    borderWidth: 1,
-    borderColor: 'gray',
-    marginRight: 10,
-    borderRadius: 5,
-    paddingLeft: 10,
+    padding: 10,
+    paddingTop: 50,
+    paddingBottom: 50,
   },
-  userMessage: {
-    alignSelf: 'flex-end',
-    backgroundColor: '#DCF8C6',
-    borderRadius: 10,
-    padding: 8,
-    marginVertical: 5,
-  },
-  aiMessage: {
-    alignSelf: 'flex-start',
-    backgroundColor: '#ECECEC',
-    borderRadius: 10,
-    padding: 8,
-    marginVertical: 5,
-  },
-  header:{
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
-    borderBottomWidth: 1,
-    marginBottom: 20,
-    flexDirection: "row",
-    justifyContent: 'space-between',
-    paddingBottom: 10
+    marginTop: 22,
   },
-  logoText:{
-    fontSize: 20,
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
     fontWeight: "600",
+    fontSize: 20,
   },
-  logoImg:{
-    width: 25,
-    height: 25,
-  },
-  settings:{
-    width: 25,
-    height: 25
-  }
 });
-
