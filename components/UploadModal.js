@@ -54,6 +54,7 @@ export default function UploadModal(props) {
       if (response.ok) {
         const responseData = await response.text();
         console.log("Upload successful", responseData);
+        props.toggleModal();
       } else {
         console.error("Upload failed", response);
       }
