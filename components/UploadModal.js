@@ -13,7 +13,7 @@ import * as ImagePicker from "expo-image-picker";
 
 export default function UploadModal(props) {
   const [selectedImage, setSelectedImage] = useState(null);
-  const fetchURL = "https://chatcharm.onrender.com"
+  const fetchURL = "https://chatcharm.onrender.com";
 
   const openGallery = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({

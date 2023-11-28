@@ -1,5 +1,5 @@
 import { ScrollView, View, Text, StyleSheet, Image } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 
 export default function MessageContainer(props) {
   return (
@@ -28,7 +28,7 @@ export default function MessageContainer(props) {
           {message.sender === "user" && (
             <Image
               style={styles.profilePic}
-              source={require("../assets/profile.png")}
+              source={props.profileURI != "" ? {uri: props.profileURI} : require("../assets/profile.png")}
             />
           )}
         </View>

@@ -17,10 +17,15 @@ export default function App() {
   const [isAnyModalActive, setIsAnyModalActive] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [JWT, setJWT] = useState("");
+  const [profileURI, setProfileURI] = useState("");
+  const fetchURL = "https://chatcharm.onrender.com";
 
   const checkIfLoggedIn = async () =>{
     if (await AsyncStorage.getItem("jwt")) {
+      setJWT(await AsyncStorage.getItem("jwt"));
       setLoggedIn(true);
+      const pic = await getProfileImage();
+      setProfileURI(pic);
     }
   }
   const sendText = () => {
@@ -52,9 +57,34 @@ export default function App() {
     setLoggedIn(true);
     await AsyncStorage.setItem("jwt", token);
   }
+  async function getProfileImage(){
+      const response = await fetch(fetchURL + "/GetProfile", {
+        method: "GET",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "Authorization" : "Bearer " + await AsyncStorage.getItem("jwt"),
+        },
+      });
+
+      if (response.ok) {
+        const responseData = await response.blob();
+        return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = function () {
+            resolve(reader.result);
+          };
+          reader.readAsDataURL(responseData);
+        });
+      } else {
+        // Handle HTTP errors
+        console.error("GetProfile failed:", response.status);
+        return null;
+      }
+  }
 
   useEffect(() => {
     checkIfLoggedIn();
+    getProfileImage();
   }, []);
   return (
     <View style={styles.container}>
@@ -77,8 +107,9 @@ export default function App() {
         setModalVisible={ToggleModal}
         loggedIn={loggedIn}
         setRegisterModalVisible={ToggleModalRegister}
+        profileIMG={profileURI}
       ></Header>
-      <MessageContainer messages={messages}></MessageContainer>
+      <MessageContainer messages={messages} profileURI={profileURI}></MessageContainer>
       <InputContainer
         sendText={sendText}
         setUserText={setUserText}

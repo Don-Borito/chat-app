@@ -6,7 +6,8 @@ export default function Header(props) {
   useEffect(() => {
     if (props.loggedIn == false) {
       setProfileImage(require("../assets/settings.png"));
-    } else {
+    }
+    else{
       setProfileImage(require("../assets/profile.png"));
     }
   }, []);
@@ -25,7 +26,7 @@ export default function Header(props) {
             : props.setModalVisible
         }
       >
-        <Image style={styles.settings} source={profileImage}></Image>
+        <Image style={styles.settings} source={props.profileIMG != "" ? {uri: props.profileIMG} : require("../assets/profile.png")}></Image>
       </TouchableOpacity>
     </View>
   );
