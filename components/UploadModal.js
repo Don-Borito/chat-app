@@ -26,7 +26,6 @@ export default function UploadModal(props) {
     if (!result.canceled && result.assets && result.assets.length > 0) {
       const selectedAsset = result.assets[0];
       setSelectedImage(selectedAsset.uri);
-      uploadImage(selectedAsset);
     }
   };
 
@@ -82,6 +81,12 @@ export default function UploadModal(props) {
               style={{ width: 300, height: 300 }}
             />
           )}
+          <Pressable
+            style={[styles.button, styles.buttonClose]}
+            onPress={() => selectedImage && uploadImage({ uri: selectedImage })}
+          >
+            <Text style={styles.textStyle}>Select this Image</Text>
+          </Pressable>
           <Pressable
             style={[styles.button, styles.buttonClose]}
             onPress={() => props.toggleModal()}
