@@ -7,12 +7,13 @@ import {
   Text,
   Button,
   Image,
+  Platform
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { Platform } from "react-native";
 
 export default function UploadModal(props) {
   const [selectedImage, setSelectedImage] = useState(null);
+  const fetchURL = "https://chatcharm.onrender.com"
 
   const openGallery = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -42,16 +43,17 @@ export default function UploadModal(props) {
     });
 
     try {
-      const response = await fetch("YOUR_API_ENDPOINT", {
+      const response = await fetch(fetchURL + "/UploadImage", {
         method: "POST",
         body: formData,
         headers: {
           "Content-Type": "multipart/form-data",
+          "Authorization" : "Bearer " + props.token,
         },
       });
 
       if (response.ok) {
-        const responseData = await response.json();
+        const responseData = await response.text();
         console.log("Upload successful", responseData);
       } else {
         console.error("Upload failed", response);

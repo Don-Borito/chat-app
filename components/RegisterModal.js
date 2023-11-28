@@ -7,31 +7,25 @@ import {
   Text,
   KeyboardAvoidingView,
   TextInput,
+  Platform
 } from "react-native";
 
 export default function RegisterModal(props) {
   const [username, setName] = useState("");
   const [password, setPassword] = useState("");
-  const fetchURL = "http://172.20.10.2:7261";
+  const fetchURL = "https://chatcharm.onrender.com";
 
   const handleRegister = async () => {
     console.log("Registering:", username, password);
     try {
-      const response = await fetch(`${fetchURL}/register`, {
+      const response = await fetch(`${fetchURL}/register?Username=${username}&Password=${password}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          username: username,
-          password: password,
-        }),
       });
 
       if (response.ok) {
-        const data = await response.json();
-        // Handle the response data
-        console.log("Registration successful:", data);
         props.toggleModal();
         props.toggleModalLogin();
       } else {
@@ -43,6 +37,11 @@ export default function RegisterModal(props) {
       console.error("Network error:", error);
     }
   };
+
+  const switchToLogin = () =>{
+    props.toggleModal();
+    props.toggleModalLogin();
+  }
   return (
     <Modal
       animationType="slide"
@@ -81,6 +80,12 @@ export default function RegisterModal(props) {
               onPress={handleRegister}
             >
               <Text style={styles.textStyle}>Register</Text>
+            </Pressable>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={switchToLogin}
+            >
+              <Text style={styles.textStyle}>Already have an account?</Text>
             </Pressable>
 
             <Pressable

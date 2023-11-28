@@ -7,36 +7,32 @@ import {
   Text,
   KeyboardAvoidingView,
   TextInput,
+  Platform
 } from "react-native";
 
 export default function LoginModal(props) {
   const [username, setName] = useState("");
   const [password, setPassword] = useState("");
-  const fetchURL = "http://172.20.10.2:7261";
+  const fetchURL = "https://chatcharm.onrender.com";
 
   const handleLogin = async () => {
     console.log("Login:", username, password);
     try {
-      const response = await fetch(`${fetchURL}/register`, {
+      const response = await fetch(`${fetchURL}/Login?Username=${username}&Password=${password}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          username: username,
-          password: password,
-        }),
       });
 
       if (response.ok) {
-        const data = await response.json();
-        // Handle the response data
-        console.log("Registration successful:", data);
+        const data = await response.text();
+        console.log("Login successful:", data);
         props.toggleModalLogin();
-        props.login();
+        props.login(data);
       } else {
         // Handle HTTP errors
-        console.error("Registration failed:", response.status);
+        console.error("Login failed:", response.status);
       }
     } catch (error) {
       // Handle network errors

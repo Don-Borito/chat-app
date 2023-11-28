@@ -45,12 +45,13 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   logoImg: {
-    width: 25,
-    height: 25,
+    width: 35,
+    height: 35,
+    borderRadius: 17.5, //Half of width and height ==> MERKEN!!!
   },
   settings: {
-    width: 25,
-    height: 25,
+    width: 30,
+    height: 30,
   },
   profile: {
     padding: 5,

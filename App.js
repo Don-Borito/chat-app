@@ -15,6 +15,7 @@ export default function App() {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [isAnyModalActive, setIsAnyModalActive] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [JWT, setJWT] = useState("");
 
   const sendText = () => {
     if (userText) {
@@ -40,7 +41,8 @@ export default function App() {
     setLoginModalVisible(!loginModalVisible);
     setIsAnyModalActive(!isAnyModalActive);
   }
-  function setLogin() {
+  function setLogin(token) {
+    setJWT(token);
     setLoggedIn(true);
   }
   return (
@@ -58,6 +60,7 @@ export default function App() {
       <UploadModal
         toggleModal={ToggleModal}
         modalVisible={uploadModalVisible}
+        token={JWT}
       ></UploadModal>
       <Header
         setModalVisible={ToggleModal}
