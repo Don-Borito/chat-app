@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Modal, Pressable, Text } from "react-native";
 import Header from "./components/Header";
 import InputContainer from "./components/InputContainer";
@@ -6,6 +6,7 @@ import MessageContainer from "./components/MessageContainer";
 import UploadModal from "./components/UploadModal";
 import RegisterModal from "./components/RegisterModal";
 import LoginModal from "./components/LoginModal";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
   const [userText, setUserText] = useState("");
@@ -17,6 +18,11 @@ export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [JWT, setJWT] = useState("");
 
+  const checkIfLoggedIn = async () =>{
+    if (await AsyncStorage.getItem("jwt")) {
+      setLoggedIn(true);
+    }
+  }
   const sendText = () => {
     if (userText) {
       const aiResponse = `AI Antwort auf: ${userText}`;
@@ -41,10 +47,15 @@ export default function App() {
     setLoginModalVisible(!loginModalVisible);
     setIsAnyModalActive(!isAnyModalActive);
   }
-  function setLogin(token) {
+  async function setLogin(token) {
     setJWT(token);
     setLoggedIn(true);
+    await AsyncStorage.setItem("jwt", token);
   }
+
+  useEffect(() => {
+    checkIfLoggedIn();
+  }, []);
   return (
     <View style={styles.container}>
       <LoginModal
