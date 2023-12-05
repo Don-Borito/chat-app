@@ -1,10 +1,15 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Header(props) {
-  const [dropdownVisible, setDropdownVisible] = useState(false);
-
   async function deleteChat() {
     await AsyncStorage.setItem("messages", "");
     props.setMessages([]);
@@ -22,14 +27,14 @@ export default function Header(props) {
       <Text style={styles.logoText}>ChatCharm</Text>
       <TouchableOpacity
         style={styles.profile}
-        onPress={() => setDropdownVisible(!dropdownVisible)}
+        onPress={() => props.setDropdownVisible(!props.dropdownVisible)}
       >
         <Image
           style={styles.settings}
           source={require("../assets/settings.png")}
         ></Image>
       </TouchableOpacity>
-      {dropdownVisible && (
+      {props.dropdownVisible && (
         <View
           style={[
             styles.dropdownMenu,

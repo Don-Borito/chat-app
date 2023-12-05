@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Modal, Pressable, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Modal,
+  Pressable,
+  Text,
+  TouchableWithoutFeedback,
+} from "react-native";
 import Header from "./components/Header";
 import InputContainer from "./components/InputContainer";
 import MessageContainer from "./components/MessageContainer";
@@ -19,6 +26,8 @@ export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [JWT, setJWT] = useState("");
   const [profileURI, setProfileURI] = useState("");
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+
   const fetchURL = "https://chatcharm.onrender.com";
 
   const checkIfLoggedIn = async () => {
@@ -101,46 +110,55 @@ export default function App() {
     setMessages(parsedMessages);
   }
 
+  const closeDropdown = () => {
+    setDropdownVisible(false);
+  };
+
   useEffect(() => {
     checkIfLoggedIn();
     renderMessages();
   }, []);
   return (
     <RootSiblingParent>
-      <View style={styles.container}>
-        <LoginModal
-          toggleModalLogin={ToggleModalLogin}
-          loginModalVisible={loginModalVisible}
-          login={setLogin}
-        ></LoginModal>
-        <RegisterModal
-          toggleModal={ToggleModalRegister}
-          modalVisible={registerModalVisible}
-          toggleModalLogin={ToggleModalLogin}
-        ></RegisterModal>
-        <UploadModal
-          toggleModal={ToggleModal}
-          modalVisible={uploadModalVisible}
-          token={JWT}
-        ></UploadModal>
-        <Header
-          setModalVisible={ToggleModal}
-          loggedIn={loggedIn}
-          setRegisterModalVisible={ToggleModalRegister}
-          profileIMG={profileURI}
-          setMessages={setMessages}
-        ></Header>
-        <MessageContainer
-          messages={messages}
-          profileURI={profileURI}
-        ></MessageContainer>
-        <InputContainer
-          sendText={sendText}
-          setUserText={setUserText}
-          userText={userText}
-          isAnyModalActive={isAnyModalActive}
-        ></InputContainer>
-      </View>
+      <TouchableWithoutFeedback onPress={closeDropdown}>
+        <View style={styles.container}>
+          <LoginModal
+            toggleModalLogin={ToggleModalLogin}
+            loginModalVisible={loginModalVisible}
+            login={setLogin}
+          ></LoginModal>
+          <RegisterModal
+            toggleModal={ToggleModalRegister}
+            modalVisible={registerModalVisible}
+            toggleModalLogin={ToggleModalLogin}
+          ></RegisterModal>
+          <UploadModal
+            toggleModal={ToggleModal}
+            modalVisible={uploadModalVisible}
+            token={JWT}
+          ></UploadModal>
+          <Header
+            closeDropdown={closeDropdown}
+            dropdownVisible={dropdownVisible}
+            setDropdownVisible={setDropdownVisible}
+            setModalVisible={ToggleModal}
+            loggedIn={loggedIn}
+            setRegisterModalVisible={ToggleModalRegister}
+            profileIMG={profileURI}
+            setMessages={setMessages}
+          ></Header>
+          <MessageContainer
+            messages={messages}
+            profileURI={profileURI}
+          ></MessageContainer>
+          <InputContainer
+            sendText={sendText}
+            setUserText={setUserText}
+            userText={userText}
+            isAnyModalActive={isAnyModalActive}
+          ></InputContainer>
+        </View>
+      </TouchableWithoutFeedback>
     </RootSiblingParent>
   );
 }
