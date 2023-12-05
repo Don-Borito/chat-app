@@ -7,7 +7,7 @@ import {
   Text,
   Button,
   Image,
-  Platform
+  Platform,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
@@ -47,19 +47,34 @@ export default function UploadModal(props) {
         body: formData,
         headers: {
           "Content-Type": "multipart/form-data",
-          "Authorization" : "Bearer " + props.token,
+          Authorization: "Bearer " + props.token,
         },
       });
 
       if (response.ok) {
         const responseData = await response.text();
-        console.log("Upload successful", responseData);
+        Toast.show("Upload successful 😊", {
+          duration: Toast.durations.LONG,
+          position: Toast.positions.TOP,
+          backgroundColor: "green",
+          opacity: 100,
+        });
         props.toggleModal();
       } else {
-        console.error("Upload failed", response);
+        Toast.show("Upload failed 🥺 \n Error: " + response.status, {
+          duration: Toast.durations.LONG,
+          position: Toast.positions.TOP,
+          backgroundColor: "red",
+          opacity: 100,
+        });
       }
     } catch (error) {
-      console.error("Error uploading image:", error);
+      Toast.show("Error uploading image 🥺 \n " + error, {
+        duration: Toast.durations.LONG,
+        position: Toast.positions.TOP,
+        backgroundColor: "red",
+        opacity: 100,
+      });
     }
   };
 
