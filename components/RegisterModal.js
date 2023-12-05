@@ -34,24 +34,27 @@ export default function RegisterModal(props) {
       if (response.ok) {
         props.toggleModal();
         props.toggleModalLogin();
-        Toast.show("Registration worked 😊", {
+        Toast.show("Registration succeeded 😊", {
           duration: Toast.durations.LONG,
-          position: (Toast.positions = 150),
+          position: Toast.positions.TOP,
           backgroundColor: "green",
+          opacity: 100,
         });
       } else {
         // Handle HTTP errors
         Toast.show("Registration failed 🥺 \n Error: " + response.status, {
           duration: Toast.durations.LONG,
-          position: (Toast.positions = 150),
+          position: Toast.positions.TOP,
           backgroundColor: "red",
+          opacity: 100,
         });
       }
     } catch (error) {
       Toast.show("Registration failed 🥺 \n  " + error, {
         duration: Toast.durations.LONG,
-        position: (Toast.positions = 150),
+        position: Toast.positions.TOP,
         backgroundColor: "red",
+        opacity: 100,
       });
     }
   };
@@ -126,6 +129,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 22,
     width: "100%",
+    position: "absolute",
+    bottom: 150,
   },
   modalView: {
     margin: 20,

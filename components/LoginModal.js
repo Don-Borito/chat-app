@@ -31,25 +31,28 @@ export default function LoginModal(props) {
 
       if (response.ok) {
         const data = await response.text();
-        Toast.show("Login worked 😊", {
+        Toast.show("Login succeeded 😊", {
           duration: Toast.durations.LONG,
-          position: (Toast.positions = 150),
+          position: Toast.positions.TOP,
           backgroundColor: "green",
+          opacity: 100,
         });
         props.toggleModalLogin();
         props.login(data);
       } else {
         Toast.show("Bad Request 🥺 \n Error: " + response.status, {
           duration: Toast.durations.LONG,
-          position: (Toast.positions = 150),
+          position: Toast.positions.TOP,
           backgroundColor: "red",
+          opacity: 100,
         });
       }
     } catch (error) {
       Toast.show("Something went wrong 🥺 \n Error:  " + error, {
         duration: Toast.durations.LONG,
-        position: (Toast.positions = 150),
+        position: Toast.positions.TOP,
         backgroundColor: "red",
+        opacity: 100,
       });
     }
   };
@@ -114,6 +117,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 22,
     width: "100%",
+    position: "absolute",
+    bottom: 180,
   },
   modalView: {
     margin: 20,
