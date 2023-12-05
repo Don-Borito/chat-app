@@ -30,15 +30,23 @@ export default function App() {
       setProfileURI(pic);
     }
   };
-  const sendText = () => {
+  const sendText = async () => {
     if (userText) {
       const aiResponse = `AI Antwort auf: ${userText}`;
 
-      setMessages([
+      /*setMessages([
         ...messages,
         { sender: "user", text: userText },
         { sender: "ai", text: aiResponse },
-      ]);
+      ]);*/
+      const storedMessages = await AsyncStorage.getItem("messages");
+      const parsedMessages = storedMessages ? JSON.parse(storedMessages) : [];
+      parsedMessages.push(
+        { sender: "user", text: userText },
+        { sender: "ai", text: aiResponse }
+      );
+      setMessages(parsedMessages);
+      await AsyncStorage.setItem("messages", JSON.stringify(parsedMessages));
       setUserText("");
     }
   };
@@ -88,8 +96,15 @@ export default function App() {
     }
   }
 
+  async function renderMessages() {
+    const storedMessages = await AsyncStorage.getItem("messages");
+    const parsedMessages = storedMessages ? JSON.parse(storedMessages) : [];
+    setMessages(parsedMessages);
+  }
+
   useEffect(() => {
     checkIfLoggedIn();
+    renderMessages();
   }, []);
   return (
     <RootSiblingParent>
