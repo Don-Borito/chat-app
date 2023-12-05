@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Toast from "react-native-root-toast";
 import {
   View,
   StyleSheet,
@@ -7,7 +8,7 @@ import {
   Text,
   KeyboardAvoidingView,
   TextInput,
-  Platform
+  Platform,
 } from "react-native";
 
 export default function RegisterModal(props) {
@@ -16,32 +17,49 @@ export default function RegisterModal(props) {
   const fetchURL = "https://chatcharm.onrender.com";
 
   const handleRegister = async () => {
-    console.log("Registering:", username, password);
     try {
-      const response = await fetch(`${fetchURL}/register?Username=${username}&Password=${password}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      if (username == "" || password == "") {
+        throw new Error("One of your values is null !!!");
+      }
+      const response = await fetch(
+        `${fetchURL}/register?Username=${username}&Password=${password}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (response.ok) {
         props.toggleModal();
         props.toggleModalLogin();
+        Toast.show("Registration worked 😊", {
+          duration: Toast.durations.LONG,
+          position: (Toast.positions = 150),
+          backgroundColor: "green",
+        });
       } else {
         // Handle HTTP errors
-        console.error("Registration failed:", response.status);
+        Toast.show("Registration failed 🥺 \n Error: " + response.status, {
+          duration: Toast.durations.LONG,
+          position: (Toast.positions = 150),
+          backgroundColor: "red",
+        });
       }
     } catch (error) {
-      // Handle network errors
-      console.error("Network error:", error);
+      Toast.show("Registration failed 🥺 \n  " + error, {
+        duration: Toast.durations.LONG,
+        position: (Toast.positions = 150),
+        backgroundColor: "red",
+      });
     }
   };
 
-  const switchToLogin = () =>{
+  const switchToLogin = () => {
     props.toggleModal();
     props.toggleModalLogin();
-  }
+  };
   return (
     <Modal
       animationType="slide"
@@ -129,6 +147,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
+    width: 250,
   },
   buttonOpen: {
     backgroundColor: "#F194FF",
