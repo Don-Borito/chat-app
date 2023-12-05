@@ -7,7 +7,7 @@ import {
   Text,
   KeyboardAvoidingView,
   TextInput,
-  Platform
+  Platform,
 } from "react-native";
 
 export default function LoginModal(props) {
@@ -18,12 +18,15 @@ export default function LoginModal(props) {
   const handleLogin = async () => {
     console.log("Login:", username, password);
     try {
-      const response = await fetch(`${fetchURL}/Login?Username=${username}&Password=${password}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `${fetchURL}/Login?Username=${username}&Password=${password}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (response.ok) {
         const data = await response.text();
@@ -31,11 +34,9 @@ export default function LoginModal(props) {
         props.toggleModalLogin();
         props.login(data);
       } else {
-        // Handle HTTP errors
         console.error("Login failed:", response.status);
       }
     } catch (error) {
-      // Handle network errors
       console.error("Network error:", error);
     }
   };

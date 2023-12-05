@@ -6,7 +6,7 @@ import MessageContainer from "./components/MessageContainer";
 import UploadModal from "./components/UploadModal";
 import RegisterModal from "./components/RegisterModal";
 import LoginModal from "./components/LoginModal";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
   const [userText, setUserText] = useState("");
@@ -20,14 +20,14 @@ export default function App() {
   const [profileURI, setProfileURI] = useState("");
   const fetchURL = "https://chatcharm.onrender.com";
 
-  const checkIfLoggedIn = async () =>{
+  const checkIfLoggedIn = async () => {
     if (await AsyncStorage.getItem("jwt")) {
       setJWT(await AsyncStorage.getItem("jwt"));
       setLoggedIn(true);
       const pic = await getProfileImage();
       setProfileURI(pic);
     }
-  }
+  };
   const sendText = () => {
     if (userText) {
       const aiResponse = `AI Antwort auf: ${userText}`;
@@ -57,12 +57,13 @@ export default function App() {
     setLoggedIn(true);
     await AsyncStorage.setItem("jwt", token);
   }
-  async function getProfileImage(){
+  async function getProfileImage() {
+    try {
       const response = await fetch(fetchURL + "/GetProfile", {
         method: "GET",
         headers: {
           "Content-Type": "multipart/form-data",
-          "Authorization" : "Bearer " + await AsyncStorage.getItem("jwt"),
+          Authorization: "Bearer " + (await AsyncStorage.getItem("jwt")),
         },
       });
 
@@ -80,11 +81,13 @@ export default function App() {
         console.error("GetProfile failed:", response.status);
         return null;
       }
+    } catch {
+      console.log("No profile image");
+    }
   }
 
   useEffect(() => {
     checkIfLoggedIn();
-    getProfileImage();
   }, []);
   return (
     <View style={styles.container}>
@@ -109,7 +112,10 @@ export default function App() {
         setRegisterModalVisible={ToggleModalRegister}
         profileIMG={profileURI}
       ></Header>
-      <MessageContainer messages={messages} profileURI={profileURI}></MessageContainer>
+      <MessageContainer
+        messages={messages}
+        profileURI={profileURI}
+      ></MessageContainer>
       <InputContainer
         sendText={sendText}
         setUserText={setUserText}
