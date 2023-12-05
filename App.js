@@ -7,6 +7,7 @@ import UploadModal from "./components/UploadModal";
 import RegisterModal from "./components/RegisterModal";
 import LoginModal from "./components/LoginModal";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { RootSiblingParent } from "react-native-root-siblings";
 
 export default function App() {
   const [userText, setUserText] = useState("");
@@ -21,6 +22,7 @@ export default function App() {
   const fetchURL = "https://chatcharm.onrender.com";
 
   const checkIfLoggedIn = async () => {
+    await AsyncStorage.removeItem("jwt");
     if (await AsyncStorage.getItem("jwt")) {
       setJWT(await AsyncStorage.getItem("jwt"));
       setLoggedIn(true);
@@ -105,40 +107,41 @@ export default function App() {
     renderMessages();
   }, []);
   return (
-    <View style={styles.container}>
-      <LoginModal
-        toggleModalLogin={ToggleModalLogin}
-        loginModalVisible={loginModalVisible}
-        login={setLogin}
-      ></LoginModal>
-      <RegisterModal
-        toggleModal={ToggleModalRegister}
-        modalVisible={registerModalVisible}
-        toggleModalLogin={ToggleModalLogin}
-      ></RegisterModal>
-      <UploadModal
-        toggleModal={ToggleModal}
-        modalVisible={uploadModalVisible}
-        token={JWT}
-      ></UploadModal>
-      <Header
-        setModalVisible={ToggleModal}
-        loggedIn={loggedIn}
-        setRegisterModalVisible={ToggleModalRegister}
-        profileIMG={profileURI}
-        setMessages={setMessages}
-      ></Header>
-      <MessageContainer
-        messages={messages}
-        profileURI={profileURI}
-      ></MessageContainer>
-      <InputContainer
-        sendText={sendText}
-        setUserText={setUserText}
-        userText={userText}
-        isAnyModalActive={isAnyModalActive}
-      ></InputContainer>
-    </View>
+    <RootSiblingParent>
+      <View style={styles.container}>
+        <LoginModal
+          toggleModalLogin={ToggleModalLogin}
+          loginModalVisible={loginModalVisible}
+          login={setLogin}
+        ></LoginModal>
+        <RegisterModal
+          toggleModal={ToggleModalRegister}
+          modalVisible={registerModalVisible}
+          toggleModalLogin={ToggleModalLogin}
+        ></RegisterModal>
+        <UploadModal
+          toggleModal={ToggleModal}
+          modalVisible={uploadModalVisible}
+          token={JWT}
+        ></UploadModal>
+        <Header
+          setModalVisible={ToggleModal}
+          loggedIn={loggedIn}
+          setRegisterModalVisible={ToggleModalRegister}
+          profileIMG={profileURI}
+        ></Header>
+        <MessageContainer
+          messages={messages}
+          profileURI={profileURI}
+        ></MessageContainer>
+        <InputContainer
+          sendText={sendText}
+          setUserText={setUserText}
+          userText={userText}
+          isAnyModalActive={isAnyModalActive}
+        ></InputContainer>
+      </View>
+    </RootSiblingParent>
   );
 }
 

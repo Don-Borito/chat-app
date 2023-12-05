@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Toast from "react-native-root-toast";
 import {
   View,
   StyleSheet,
@@ -30,16 +31,29 @@ export default function LoginModal(props) {
 
       if (response.ok) {
         const data = await response.text();
-        console.log("Login successful:", data);
+        Toast.show("Login worked 😊", {
+          duration: Toast.durations.LONG,
+          position: (Toast.positions = 150),
+          backgroundColor: "green",
+        });
         props.toggleModalLogin();
         props.login(data);
       } else {
-        console.error("Login failed:", response.status);
+        Toast.show("Bad Request 🥺 \n Error: " + response.status, {
+          duration: Toast.durations.LONG,
+          position: (Toast.positions = 150),
+          backgroundColor: "red",
+        });
       }
     } catch (error) {
-      console.error("Network error:", error);
+      Toast.show("Something went wrong 🥺 \n Error:  " + error, {
+        duration: Toast.durations.LONG,
+        position: (Toast.positions = 150),
+        backgroundColor: "red",
+      });
     }
   };
+
   return (
     <Modal
       animationType="slide"
@@ -121,6 +135,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
+    width: 250,
   },
   buttonOpen: {
     backgroundColor: "#F194FF",
@@ -128,6 +143,11 @@ const styles = StyleSheet.create({
   buttonClose: {
     marginVertical: 10,
     backgroundColor: "#2196F3",
+  },
+  badToast: {
+    backgroundColor: "red",
+    shadowColor: "red",
+    marginBottom: "40%",
   },
   textStyle: {
     color: "white",
