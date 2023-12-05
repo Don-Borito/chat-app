@@ -53,13 +53,28 @@ export default function UploadModal(props) {
 
       if (response.ok) {
         const responseData = await response.text();
-        console.log("Upload successful", responseData);
-        props.toggleModal("upload");
+        Toast.show("Upload successful 😊", {
+          duration: Toast.durations.LONG,
+          position: Toast.positions.TOP,
+          backgroundColor: "green",
+          opacity: 100,
+        });
+        props.toggleModal();
       } else {
-        console.error("Upload failed", response);
+        Toast.show("Upload failed 🥺 \n Error: " + response.status, {
+          duration: Toast.durations.LONG,
+          position: Toast.positions.TOP,
+          backgroundColor: "red",
+          opacity: 100,
+        });
       }
     } catch (error) {
-      console.error("Error uploading image:", error);
+      Toast.show("Error uploading image 🥺 \n " + error, {
+        duration: Toast.durations.LONG,
+        position: Toast.positions.TOP,
+        backgroundColor: "red",
+        opacity: 100,
+      });
     }
   };
 

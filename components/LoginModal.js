@@ -19,6 +19,9 @@ export default function LoginModal(props) {
   const handleLogin = async () => {
     console.log("Login:", username, password);
     try {
+      if (username == "" || password == "") {
+        throw new Error("One of your values is null !!!");
+      }
       const response = await fetch(
         `${fetchURL}/Login?Username=${username}&Password=${password}`,
         {
