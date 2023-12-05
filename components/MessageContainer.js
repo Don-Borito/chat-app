@@ -9,7 +9,9 @@ export default function MessageContainer(props) {
           key={index}
           style={[
             styles.messageContainer,
-            message.sender === "user" ? styles.userContainer : styles.aiContainer,
+            message.sender === "user"
+              ? styles.userContainer
+              : styles.aiContainer,
           ]}
         >
           {message.sender === "ai" && (
@@ -28,7 +30,11 @@ export default function MessageContainer(props) {
           {message.sender === "user" && (
             <Image
               style={styles.profilePic}
-              source={props.profileURI != "" ? {uri: props.profileURI} : require("../assets/profile.png")}
+              source={
+                props.profileURI != ""
+                  ? { uri: props.profileURI }
+                  : require("../assets/profile.png")
+              }
             />
           )}
         </View>
@@ -39,36 +45,36 @@ export default function MessageContainer(props) {
 
 const styles = StyleSheet.create({
   messageContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginVertical: 5,
   },
   userContainer: {
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
   },
   aiContainer: {
-    justifyContent: 'flex-start',
+    justifyContent: "flex-start",
   },
   userMessage: {
     backgroundColor: "#DCF8C6",
     borderRadius: 10,
     padding: 8,
-    maxWidth: '40%',
+    maxWidth: "40%",
     marginLeft: 10,
-    alignSelf: 'flex-end',
+    alignSelf: "flex-end",
   },
   aiMessage: {
     backgroundColor: "#ECECEC",
     borderRadius: 10,
     padding: 8,
-    maxWidth: '40%',
+    maxWidth: "40%",
     marginRight: 10,
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
   },
   profilePic: {
     width: 30,
     height: 30,
     borderRadius: 15,
-    marginHorizontal: 10
-  }
+    marginHorizontal: 10,
+  },
 });
