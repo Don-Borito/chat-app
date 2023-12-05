@@ -1,9 +1,16 @@
 import { ScrollView, View, Text, StyleSheet, Image } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 export default function MessageContainer(props) {
+  const scrollViewRef = useRef();
   return (
-    <ScrollView style={{ flex: 1 }}>
+    <ScrollView
+      style={{ flex: 1 }}
+      ref={scrollViewRef}
+      onContentSizeChange={() =>
+        scrollViewRef.current.scrollToEnd({ animated: true })
+      }
+    >
       {props.messages.map((message, index) => (
         <View
           key={index}

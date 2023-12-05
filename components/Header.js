@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Header(props) {
-  const [profileImage, setProfileImage] = useState(null);
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
   async function deleteChat() {
@@ -14,11 +13,6 @@ export default function Header(props) {
     await AsyncStorage.setItem("jwt", "");
   }
 
-  useEffect(() => {
-    props.profileIMG != ""
-      ? setProfileImage({ uri: props.profileIMG })
-      : setProfileImage(require("../assets/profile.png"));
-  }, []);
   return (
     <View style={styles.header}>
       <Image
@@ -30,7 +24,10 @@ export default function Header(props) {
         style={styles.profile}
         onPress={() => setDropdownVisible(!dropdownVisible)}
       >
-        <Image style={styles.settings} source={profileImage}></Image>
+        <Image
+          style={styles.settings}
+          source={require("../assets/settings.png")}
+        ></Image>
       </TouchableOpacity>
       {dropdownVisible && (
         <View

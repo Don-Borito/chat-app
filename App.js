@@ -22,7 +22,6 @@ export default function App() {
   const fetchURL = "https://chatcharm.onrender.com";
 
   const checkIfLoggedIn = async () => {
-    await AsyncStorage.removeItem("jwt");
     if (await AsyncStorage.getItem("jwt")) {
       setJWT(await AsyncStorage.getItem("jwt"));
       setLoggedIn(true);
@@ -129,6 +128,7 @@ export default function App() {
           loggedIn={loggedIn}
           setRegisterModalVisible={ToggleModalRegister}
           profileIMG={profileURI}
+          setMessages={setMessages}
         ></Header>
         <MessageContainer
           messages={messages}
