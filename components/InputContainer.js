@@ -17,6 +17,7 @@ export default function InputContainer(props) {
         value={props.userText}
         onChangeText={props.setUserText}
         placeholder="Enter message"
+        onFocus={props.closeDropdown}
       />
       <Button title="Send" onPress={props.sendText} />
     </KeyboardAvoidingView>

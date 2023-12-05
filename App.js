@@ -78,7 +78,7 @@ export default function App() {
         method: "GET",
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: "Bearer " + (await AsyncStorage.getItem("jwt")),
+          Authorization: "Bearer " + JWT,
         },
       });
 
@@ -114,32 +114,36 @@ export default function App() {
   useEffect(() => {
     checkIfLoggedIn();
     renderMessages();
-  }, [JWT]);
+  }, [loggedIn]);
   return (
     <RootSiblingParent>
       <TouchableWithoutFeedback onPress={closeDropdown}>
         <View style={styles.container}>
           <LoginModal
-            toggleModalLogin={ToggleModalLogin}
+            toggleModal={toggleModal}
             loginModalVisible={loginModalVisible}
             login={setLogin}
           ></LoginModal>
           <RegisterModal
-            toggleModal={ToggleModalRegister}
+            toggleModal={toggleModal}
             modalVisible={registerModalVisible}
-            toggleModalLogin={ToggleModalLogin}
           ></RegisterModal>
           <UploadModal
-            toggleModal={ToggleModal}
+            toggleModal={toggleModal}
             modalVisible={uploadModalVisible}
             token={JWT}
           ></UploadModal>
           <Header
-            setModalVisible={ToggleModal}
+            toggleModal={toggleModal}
             loggedIn={loggedIn}
-            setRegisterModalVisible={ToggleModalRegister}
             profileIMG={profileURI}
             setMessages={setMessages}
+            setDropdownVisible={setDropdownVisible}
+            closeDropdown={closeDropdown}
+            dropdownVisible={dropdownVisible}
+            setJWT={setJWT}
+            setLoggedIn={setLoggedIn}
+            setProfileURI={setProfileURI}
           ></Header>
           <MessageContainer
             messages={messages}
@@ -149,7 +153,7 @@ export default function App() {
             sendText={sendText}
             setUserText={setUserText}
             userText={userText}
-            isAnyModalActive={isAnyModalActive}
+            closeDropdown={closeDropdown}
           ></InputContainer>
         </View>
       </TouchableWithoutFeedback>

@@ -13,11 +13,14 @@ export default function Header(props) {
   async function deleteChat() {
     await AsyncStorage.setItem("messages", "");
     props.setMessages([]);
+    props.closeDropdown();
   }
   async function logout() {
     await AsyncStorage.setItem("jwt", "");
-    console.log("TEst");
     props.setJWT("");
+    props.setLoggedIn(false);
+    props.setProfileURI("");
+    props.closeDropdown();
   }
 
   return (

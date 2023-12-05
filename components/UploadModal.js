@@ -10,6 +10,7 @@ import {
   Platform,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import Toast from "react-native-root-toast";
 
 export default function UploadModal(props) {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -59,7 +60,7 @@ export default function UploadModal(props) {
           backgroundColor: "green",
           opacity: 100,
         });
-        props.toggleModal();
+        props.toggleModal("upload");
       } else {
         Toast.show("Upload failed 🥺 \n Error: " + response.status, {
           duration: Toast.durations.LONG,

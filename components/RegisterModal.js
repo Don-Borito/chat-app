@@ -32,8 +32,8 @@ export default function RegisterModal(props) {
       );
 
       if (response.ok) {
-        props.toggleModal();
-        props.toggleModalLogin();
+        props.toggleModal("register");
+        props.toggleModal("login");
         Toast.show("Registration succeeded 😊", {
           duration: Toast.durations.LONG,
           position: Toast.positions.TOP,
