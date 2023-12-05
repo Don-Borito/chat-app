@@ -11,6 +11,8 @@ export default function Header(props) {
   }
   async function logout() {
     await AsyncStorage.setItem("jwt", "");
+    console.log("TEst");
+    props.setJWT("");
   }
 
   return (
@@ -37,11 +39,11 @@ export default function Header(props) {
           ]}
         >
           <TouchableOpacity
-            onPress={
+            onPress={() => {
               props.loggedIn
-                ? props.setModalVisible
-                : props.setRegisterModalVisible
-            }
+                ? props.toggleModal("upload")
+                : props.toggleModal("register");
+            }}
           >
             <Text style={styles.dropdownText}>
               {props.loggedIn ? "Select profile Image" : "Register"}

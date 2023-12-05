@@ -37,7 +37,7 @@ export default function LoginModal(props) {
           backgroundColor: "green",
           opacity: 100,
         });
-        props.toggleModalLogin();
+        props.toggleModal("login");
         props.login(data);
       } else {
         Toast.show("Bad Request 🥺 \n Error: " + response.status, {
@@ -63,7 +63,7 @@ export default function LoginModal(props) {
       transparent={true}
       visible={props.loginModalVisible}
       onRequestClose={() => {
-        props.toggleModalLogin();
+        props.toggleModal("login");
       }}
     >
       <KeyboardAvoidingView
@@ -99,7 +99,7 @@ export default function LoginModal(props) {
 
             <Pressable
               style={[styles.button, styles.buttonClose]}
-              onPress={() => props.toggleModalLogin()}
+              onPress={() => props.toggleModal("login")}
             >
               <Text style={styles.textStyle}>Hide Modal</Text>
             </Pressable>

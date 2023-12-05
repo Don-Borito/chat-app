@@ -7,7 +7,7 @@ import {
   Text,
   Button,
   Image,
-  Platform
+  Platform,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
@@ -47,14 +47,14 @@ export default function UploadModal(props) {
         body: formData,
         headers: {
           "Content-Type": "multipart/form-data",
-          "Authorization" : "Bearer " + props.token,
+          Authorization: "Bearer " + props.token,
         },
       });
 
       if (response.ok) {
         const responseData = await response.text();
         console.log("Upload successful", responseData);
-        props.toggleModal();
+        props.toggleModal("upload");
       } else {
         console.error("Upload failed", response);
       }
@@ -69,7 +69,7 @@ export default function UploadModal(props) {
       transparent={true}
       visible={props.modalVisible}
       onRequestClose={() => {
-        props.toggleModal();
+        props.toggleModal("upload");
       }}
     >
       <View style={styles.centeredView}>
@@ -90,7 +90,7 @@ export default function UploadModal(props) {
           </Pressable>
           <Pressable
             style={[styles.button, styles.buttonClose]}
-            onPress={() => props.toggleModal()}
+            onPress={() => props.toggleModal("upload")}
           >
             <Text style={styles.textStyle}>Hide Modal</Text>
           </Pressable>

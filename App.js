@@ -15,7 +15,6 @@ export default function App() {
   const [uploadModalVisible, setUploadModalVisible] = useState(false);
   const [registerModalVisible, setRegisterModalVisible] = useState(false);
   const [loginModalVisible, setLoginModalVisible] = useState(false);
-  const [isAnyModalActive, setIsAnyModalActive] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [JWT, setJWT] = useState("");
   const [profileURI, setProfileURI] = useState("");
@@ -49,17 +48,15 @@ export default function App() {
       setUserText("");
     }
   };
-  function ToggleModal() {
-    setUploadModalVisible(!uploadModalVisible);
-    setIsAnyModalActive(!isAnyModalActive);
-  }
-  function ToggleModalRegister() {
-    setRegisterModalVisible(!registerModalVisible);
-    setIsAnyModalActive(!isAnyModalActive);
-  }
-  function ToggleModalLogin() {
-    setLoginModalVisible(!loginModalVisible);
-    setIsAnyModalActive(!isAnyModalActive);
+
+  function toggleModal(modalType) {
+    if (modalType === "upload") {
+      setUploadModalVisible((prevState) => !prevState);
+    } else if (modalType === "register") {
+      setRegisterModalVisible((prevState) => !prevState);
+    } else if (modalType === "login") {
+      setLoginModalVisible((prevState) => !prevState);
+    }
   }
   async function setLogin(token) {
     setJWT(token);
@@ -104,31 +101,30 @@ export default function App() {
   useEffect(() => {
     checkIfLoggedIn();
     renderMessages();
-  }, []);
+  }, [JWT]);
   return (
     <RootSiblingParent>
       <View style={styles.container}>
         <LoginModal
-          toggleModalLogin={ToggleModalLogin}
+          toggleModal={toggleModal}
           loginModalVisible={loginModalVisible}
           login={setLogin}
         ></LoginModal>
         <RegisterModal
-          toggleModal={ToggleModalRegister}
+          toggleModal={toggleModal}
           modalVisible={registerModalVisible}
-          toggleModalLogin={ToggleModalLogin}
         ></RegisterModal>
         <UploadModal
-          toggleModal={ToggleModal}
+          toggleModal={toggleModal}
           modalVisible={uploadModalVisible}
           token={JWT}
         ></UploadModal>
         <Header
-          setModalVisible={ToggleModal}
+          toggleModal={toggleModal}
           loggedIn={loggedIn}
-          setRegisterModalVisible={ToggleModalRegister}
           profileIMG={profileURI}
           setMessages={setMessages}
+          setJWT={setJWT}
         ></Header>
         <MessageContainer
           messages={messages}
@@ -138,7 +134,6 @@ export default function App() {
           sendText={sendText}
           setUserText={setUserText}
           userText={userText}
-          isAnyModalActive={isAnyModalActive}
         ></InputContainer>
       </View>
     </RootSiblingParent>

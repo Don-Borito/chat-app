@@ -10,7 +10,7 @@ export default function InputContainer(props) {
     <KeyboardAvoidingView
       style={styles.inputContainer}
       behavior="padding"
-      enabled={!props.isAnyModalActive}
+      enabled={true}
     >
       <TextInput
         style={styles.textInput}

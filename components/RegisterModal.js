@@ -60,8 +60,8 @@ export default function RegisterModal(props) {
   };
 
   const switchToLogin = () => {
-    props.toggleModal();
-    props.toggleModalLogin();
+    props.toggleModal("register");
+    props.toggleModal("login");
   };
   return (
     <Modal
@@ -69,7 +69,7 @@ export default function RegisterModal(props) {
       transparent={true}
       visible={props.modalVisible}
       onRequestClose={() => {
-        props.toggleModal();
+        props.toggleModal("register");
       }}
     >
       <KeyboardAvoidingView
@@ -111,7 +111,7 @@ export default function RegisterModal(props) {
 
             <Pressable
               style={[styles.button, styles.buttonClose]}
-              onPress={() => props.toggleModal()}
+              onPress={() => props.toggleModal("register")}
             >
               <Text style={styles.textStyle}>Hide Modal</Text>
             </Pressable>
