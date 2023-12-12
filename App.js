@@ -33,8 +33,6 @@ export default function App() {
     if (await AsyncStorage.getItem("jwt")) {
       setJWT(await AsyncStorage.getItem("jwt"));
       setLoggedIn(true);
-      const pic = await getProfileImage();
-      setProfileURI(pic);
     }
   };
   const sendText = async () => {
@@ -74,6 +72,7 @@ export default function App() {
   }
   async function getProfileImage() {
     try {
+      console.log("JWT:" + JWT);
       const response = await fetch(fetchURL + "/GetProfile", {
         method: "GET",
         headers: {
@@ -115,6 +114,17 @@ export default function App() {
     checkIfLoggedIn();
     renderMessages();
   }, [loggedIn]);
+
+  useEffect(() => {
+    async function SetUp() {
+      const pic = await getProfileImage();
+      setProfileURI(pic);
+    }
+    if (JWT != "") {
+      SetUp();
+    }
+  }, [JWT]);
+
   return (
     <RootSiblingParent>
       <TouchableWithoutFeedback onPress={closeDropdown}>
